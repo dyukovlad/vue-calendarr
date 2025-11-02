@@ -1,9 +1,8 @@
 import { ref, computed } from 'vue';
 
-const pad = (n) => String(n).padStart(2, '0');
+const pad = n => String(n).padStart(2, '0');
 
-const isoFromDate = (dt) =>
-  `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+const isoFromDate = dt => `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
 
 const startOfMonth = (year, month) => new Date(year, month, 1);
 

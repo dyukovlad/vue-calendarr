@@ -26,10 +26,14 @@ const locale = ref('en');
 //   }
 // };
 
-const onSelect = (payload) => {
+const onSelect = payload => {
   console.log('select event ->', payload);
   selected.value = payload.iso;
-}
-const onDateUpdate = (iso) => { selected.value = iso; }
-const onLocaleChanged = (local) => { console.log('locale ->', local); }
+};
+const onDateUpdate = iso => {
+  selected.value = iso;
+};
+const onLocaleChanged = local => {
+  console.log('locale ->', local);
+};
 </script>

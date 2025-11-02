@@ -24,27 +24,56 @@ const props = defineProps({
   activeYear: { type: Number, required: true },
   activeMonth: { type: Number, required: true },
   locale: { type: String, default: 'en' },
-  i18n: { type: Object, default: () => ({}) }
+  i18n: { type: Object, default: () => ({}) },
 });
 const emit = defineEmits(['prev', 'next', 'today', 'update:locale']);
 
 const builtin = {
   en: {
-    months: ['January','February','March','April','May','June','July','August','September','October','November','December']
+    months: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ],
   },
   ru: {
-    months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь']
-  }
+    months: [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь',
+    ],
+  },
 };
 
 const localesList = { ...builtin, ...props.i18n };
 const localLocale = ref(props.locale);
 
-watch(() => props.locale, (v) => { localLocale.value = v; });
+watch(
+  () => props.locale,
+  v => {
+    localLocale.value = v;
+  }
+);
 
-const onLocaleChange = () => 
-  emit('update:locale', localLocale.value);
-
+const onLocaleChange = () => emit('update:locale', localLocale.value);
 
 const monthNames = computed(() => {
   if (props.i18n && props.i18n[localLocale.value] && props.i18n[localLocale.value].months) {
@@ -57,16 +86,20 @@ const monthNames = computed(() => {
 
 <style scoped>
 .calendar-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:8px 12px;
-  border-bottom:1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .left-controls button {
-  margin-right:6px;
+  margin-right: 6px;
 }
-.title { font-weight:600; }
-.right-controls select { padding:4px; }
+.title {
+  font-weight: 600;
+}
+.right-controls select {
+  padding: 4px;
+}
 </style>
