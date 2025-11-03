@@ -49,7 +49,7 @@ export const useCalendar = (initialDate = null) => {
     const year = activeYear.value;
     const month = activeMonth.value;
     const first = startOfMonth(year, month);
-    let firstDayIndex = first.getDay(); 
+    let firstDayIndex = first.getDay();
     // Для понедельника: если воскресенье (0), то должно быть 6, иначе firstDayIndex - 1
     let gridStartOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
     const startDate = new Date(first);

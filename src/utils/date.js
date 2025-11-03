@@ -1,6 +1,7 @@
 const pad = n => String(n).padStart(2, '0');
 
-const isoFromDate = date => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+const isoFromDate = date =>
+  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
 const parseISO = s => {
   if (!s) return new Date();

@@ -29,7 +29,10 @@ const props = defineProps({
 });
 const emit = defineEmits(['prev', 'next', 'today', 'update:locale']);
 
-const localesList = computed(() => ({ ...Object.fromEntries(Object.entries(builtinMonths).map(([k, v]) => [k, { months: v }])), ...props.i18n }));
+const localesList = computed(() => ({
+  ...Object.fromEntries(Object.entries(builtinMonths).map(([k, v]) => [k, { months: v }])),
+  ...props.i18n,
+}));
 const localLocale = ref(props.locale);
 
 watch(

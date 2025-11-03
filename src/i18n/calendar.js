@@ -48,4 +48,3 @@ export const getWeekdayNames = (locale, overrides) => {
   }
   return builtinWeekdays[locale] || builtinWeekdays.en;
 };
-
