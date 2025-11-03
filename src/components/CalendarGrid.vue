@@ -28,7 +28,9 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import { todayISO as getTodayISO } from '@/utils/date.js';
+import { getWeekdayNames } from '@/i18n/calendar.js';
 
 const props = defineProps({
   weeks: { type: Array, required: true }, // from useCalendar.weeks
@@ -38,21 +40,10 @@ const props = defineProps({
 });
 const emit = defineEmits(['select', 'update:selected']);
 
-const today = new Date();
-const pad = n => String(n).padStart(2, '0');
-const todayISO = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
-
-const builtinWeekdays = {
-  en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-  es: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-};
+const todayISO = getTodayISO();
 
 const weekdayNames = computed(() => {
-  if (props.i18n && props.i18n[props.locale] && props.i18n[props.locale].weekdays) {
-    return props.i18n[props.locale].weekdays;
-  }
-  return builtinWeekdays[props.locale] || builtinWeekdays.en;
+  return getWeekdayNames(props.locale, props.i18n);
 });
 
 // отдаём объект { iso, date } и эмитируем update:selected для реактивности

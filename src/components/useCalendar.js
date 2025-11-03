@@ -1,12 +1,5 @@
 import { ref, computed } from 'vue';
-
-const pad = n => String(n).padStart(2, '0');
-
-const isoFromDate = dt => `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
-
-const startOfMonth = (year, month) => new Date(year, month, 1);
-
-// const endOfMonth = (year, month) => new Date(year, month + 1, 0);
+import { isoFromDate, parseISO, startOfMonth } from '@/utils/date.js';
 
 export const useCalendar = (initialDate = null) => {
   const today = new Date();
@@ -14,14 +7,6 @@ export const useCalendar = (initialDate = null) => {
   const activeYear = ref(init.getFullYear());
   const activeMonth = ref(init.getMonth()); // 0..11
   const selected = ref(isoFromDate(init));
-
-  function parseISO(s) {
-    // ожидаем YYYY-MM-DD, но робко парсим
-    if (!s) return new Date();
-    const m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s.trim());
-    if (!m) return new Date();
-    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-  }
 
   function goToPreviousMonth() {
     if (activeMonth.value === 0) {
@@ -64,10 +49,11 @@ export const useCalendar = (initialDate = null) => {
     const year = activeYear.value;
     const month = activeMonth.value;
     const first = startOfMonth(year, month);
-    // пусть неделя начинается с воскресенья (0), можно сделать опцией
-    const firstDayIndex = first.getDay(); // 0..6 Sunday..Saturday
+    let firstDayIndex = first.getDay(); 
+    // Для понедельника: если воскресенье (0), то должно быть 6, иначе firstDayIndex - 1
+    let gridStartOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
     const startDate = new Date(first);
-    startDate.setDate(first.getDate() - firstDayIndex); // начало сетки (воскресенье предыдущей)
+    startDate.setDate(first.getDate() - gridStartOffset); // начало сетки (понедельник предыдущей)
     const grid = [];
     let cursor = new Date(startDate);
 
@@ -100,6 +86,5 @@ export const useCalendar = (initialDate = null) => {
     setSelectedFromISO,
     setSelectedFromDate,
     isoFromDate,
-    parseISO,
   };
 };

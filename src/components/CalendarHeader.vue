@@ -20,6 +20,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
+import { getMonthNames, builtinMonths } from '@/i18n/calendar.js';
 const props = defineProps({
   activeYear: { type: Number, required: true },
   activeMonth: { type: Number, required: true },
@@ -28,42 +29,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['prev', 'next', 'today', 'update:locale']);
 
-const builtin = {
-  en: {
-    months: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ],
-  },
-  ru: {
-    months: [
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь',
-    ],
-  },
-};
-
-const localesList = { ...builtin, ...props.i18n };
+const localesList = computed(() => ({ ...Object.fromEntries(Object.entries(builtinMonths).map(([k, v]) => [k, { months: v }])), ...props.i18n }));
 const localLocale = ref(props.locale);
 
 watch(
@@ -75,13 +41,7 @@ watch(
 
 const onLocaleChange = () => emit('update:locale', localLocale.value);
 
-const monthNames = computed(() => {
-  if (props.i18n && props.i18n[localLocale.value] && props.i18n[localLocale.value].months) {
-    return props.i18n[localLocale.value].months;
-  }
-  const b = builtin[localLocale.value] || builtin.en;
-  return b.months;
-});
+const monthNames = computed(() => getMonthNames(localLocale.value, props.i18n));
 </script>
 
 <style scoped>
